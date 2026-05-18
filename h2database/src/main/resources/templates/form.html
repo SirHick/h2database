@@ -182,7 +182,7 @@
 
         <div class="form-group">
             <label for="nickname">
-                Nome Completo <span class="required">*</span>
+                Nickname <span class="required">*</span>
             </label>
             <input type="text"
                    th:field="*{nickname}"
@@ -194,12 +194,38 @@
 
         <div class="form-group">
             <label for="email">
-                Idade <span class="required">*</span>
+                Email <span class="required">*</span>
             </label>
-            <input type="number"
+            <input type="text"
                    th:field="*{email}"
                    id="email"
                    placeholder="Digite o email"
+                   min="0"
+                   max="150"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="jogoFavorito">
+                Jogo Favorito <span class="required">*</span>
+            </label>
+            <input type="text"
+                   th:field="*{jogoFavorito}"
+                   id="jogoFavorito"
+                   placeholder="Digite o seu jogo favorito"
+                   min="0"
+                   max="150"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="nivel">
+                Nivel <span class="required">*</span>
+            </label>
+            <input type="number"
+                   th:field="*{nivel}"
+                   id="nivel"
+                   placeholder="Digite o seu nível"
                    min="0"
                    max="150"
                    required>
