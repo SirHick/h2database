@@ -4,50 +4,59 @@ import exe_gamer.h2database.model.usuarioGamer;
 import exe_gamer.h2database.service.usuarioGamerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/usuario")
+@Controller
 @RequiredArgsConstructor
 
 public class usuarioGamerController {
 
     private final usuarioGamerService service;
 
-    //GET /pessoa (listar todas)
+    // ========== METODO 1: LISTAR TODAS AS PESSOAS ==========
 
-    @GetMapping
-    public List<usuarioGamer> listar(){
-        return service.listar();
+    @GetMapping ("/")
+    public String listar(Model model){
+        model.addAttribute("usuarios", service.listar());
+        return "lista";
     }
 
-    //GET /pessoa/ {id} (busca por id)
+    // ========== METODO 2: MOSTRAR FORMULÁRIO VAZIO (NOVO) ==========
 
-    @GetMapping("/{id}")
-    public ResponseEntity<usuarioGamer> buscar(@PathVariable Long id){
-        return ResponseEntity.ok(service.buscarPorID(id));
+    @GetMapping("/novo")
+    public String novo(Model model) {
+        model.addAttribute("usuario", new usuarioGamer());
+        return "form";
     }
 
-    //POST /pessoa/{id}
+    // ========== METODO 3: SALVAR OU ATUALIZAR PESSOA ==========
 
-    @PostMapping
-    public ResponseEntity<usuarioGamer> inserir(@RequestBody usuarioGamer usuario) {
-        return ResponseEntity.ok(service.inserir(usuario));
-    }
-    //PUT /pessoa /{id} (Atualizar)
-    @PutMapping("/{id}")
-    public ResponseEntity<usuarioGamer> atualizar(@PathVariable Long id,
-                                                  @RequestBody usuarioGamer dados){
-        return ResponseEntity.ok(service.atualizar(id, dados));
+    @PostMapping ("/inserir")
+    public String inserir(usuarioGamer usuario){
+        service.inserir(usuario);
+    return "redirect:/";
     }
 
-    //DELETE /pessoas/ {id}
+    // ========== METODO 4: MOSTRAR FORMULÁRIO PREENCHIDO (EDITAR) ==========
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id){
+    @GetMapping("/editar/{id}")  // ← {id} é uma VARIÁVEL na URL
+    public String editar(@PathVariable Long id, Model model) {
+
+        usuarioGamer usuario = service.buscarPorID(id);
+        model.addAttribute("usuario", usuario);
+        return "form";
+    }
+
+    // ========== METODO 5: EXCLUIR PESSOA ==========
+
+    @GetMapping("/remover/{id}")
+    public String remover(@PathVariable Long id) {
         service.remover(id);
-        return ResponseEntity.noContent().build();
+
+        return "redirect:/";
     }
 }
