@@ -51,7 +51,7 @@ public class usuarioGamerController {
         return "form";
     }
 
-    // ========== METODO 5: EXCLUIR PESSOA ==========
+    // ========== METODO 5: REMOVER PESSOA ==========
 
     @GetMapping("/remover/{id}")
     public String remover(@PathVariable Long id) {
